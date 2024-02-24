@@ -1,0 +1,5 @@
+umole32 54
+23kabsd
+mole32IsCoolID
+idTestIsCool
+mole32IsCoolID;
