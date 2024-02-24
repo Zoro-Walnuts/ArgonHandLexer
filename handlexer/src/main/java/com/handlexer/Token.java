@@ -4,11 +4,13 @@ public class Token {
     // private String name;
     private TokenTypes type;
     private String value;
+    private int line;
 
-    public Token(TokenTypes type, String value) {
+    public Token(TokenTypes type, String value, int line) {
         // this.name = name;
         this.type = type;
         this.value = value;
+        this.line = line;
     }
 
     // getters and setters
@@ -37,6 +39,10 @@ public class Token {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public int getLine() {
+        return line;
     }
 
 }

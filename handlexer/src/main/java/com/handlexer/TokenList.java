@@ -13,8 +13,8 @@ public class TokenList {
         this.tokens.add(token);
     }
 
-    public void addToken(TokenTypes type, String value) {
-        this.tokens.add(TokenFactory.createToken(type, value));
+    public void addToken(TokenTypes type, String value, int line) {
+        this.tokens.add(TokenFactory.createToken(type, value, line));
     }
 
     public int findTokenExist(Token token) {
@@ -49,8 +49,8 @@ public class TokenList {
     public void printTokens() {
         int i = 1;
         for (Token token : this.tokens) {
-            System.out.printf("token %-4d | type: %-10s | value: %-30s%n",
-                    i, token.getType().toString(), token.getValue().toString());
+            System.out.printf("token %-4d | type: %-10s | value: %-30s | line: %4d %n",
+                    i, token.getType().toString(), token.getValue().toString(), token.getLine());
             i++;
         }
     }
