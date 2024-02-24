@@ -39,7 +39,7 @@ public class TokenList {
     }
 
     public String printLatestToken() {
-        return this.tokens.get(getSize() - 1).getType().name() + "\n";
+        return this.tokens.get(getSize() - 1).getType().name();
     }
 
     public Token getToken(int x) {

@@ -112,36 +112,36 @@ public class HandLexer {
                             // create new token; add to list
                             tokenList.addToken(TokenTypes.COMMA, String.valueOf(c));
                             // token name -> output
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             break;
                         case ';':
                             tokenList.addToken(TokenTypes.SEMICOLON, String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             break;
                         case '(':
                             tokenList.addToken(TokenTypes.OPENPAR, String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             break;
                         case ')':
                             tokenList.addToken(TokenTypes.CLOSEPAR, String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             break;
                         case '{':
                             tokenList.addToken(TokenTypes.OPENBR, String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             break;
                         case '}':
                             tokenList.addToken(TokenTypes.CLOSEBR, String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             break;
                         case '!':
                             tokenList.addToken(TokenTypes.INVERT, String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             break;
 
                         case '=':
                             tokenList.addToken(TokenTypes.ASSIGN, String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             break;
 
                         case '\n':
@@ -186,13 +186,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.ADDASSIGN, "+" + String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.ADD, String.valueOf(codeString.charAt(curr - 1)));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_CROSS
@@ -202,18 +202,18 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.SUBASSIGN, "-" + String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                         case '>':
                             tokenList.addToken(TokenTypes.ARROW, "-" + String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.SUB, String.valueOf(codeString.charAt(curr - 1)));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_DASH
@@ -223,13 +223,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.MULASSIGN, "*" + String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.MUL, String.valueOf(codeString.charAt(curr - 1)));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_ASTER
@@ -239,13 +239,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.DIVASSIGN, "/" + String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.DIV, String.valueOf(codeString.charAt(curr - 1)));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_SLASH
@@ -255,13 +255,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.EXPASSIGN, "^" + String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.EXP, String.valueOf(codeString.charAt(curr - 1)));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_CARET
@@ -271,13 +271,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.GTE, ">" + String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.GT, String.valueOf(codeString.charAt(curr - 1)));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_GT
@@ -287,13 +287,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.LTE, "<" + String.valueOf(c));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.LT, String.valueOf(codeString.charAt(curr - 1)));
-                            output += tokenList.printLatestToken();
+                            output += tokenList.printLatestToken() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_LT
