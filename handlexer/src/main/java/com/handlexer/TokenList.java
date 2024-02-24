@@ -38,8 +38,8 @@ public class TokenList {
         return this.tokens.size();
     }
 
-    public String printLatestToken() {
-        return this.tokens.get(getSize() - 1).getType().name();
+    public Token getLatestToken() {
+        return this.tokens.get(getSize() - 1);
     }
 
     public Token getToken(int x) {
@@ -49,7 +49,7 @@ public class TokenList {
     public void printTokens() {
         int i = 1;
         for (Token token : this.tokens) {
-            System.out.printf("token %-4d | type: %-10s | value: %-30s | line: %4d %n",
+            System.out.printf("token %-4d | type: %-10s | value: %-30s | line: %-4d %n",
                     i, token.getType().toString(), token.getValue().toString(), token.getLine());
             i++;
         }

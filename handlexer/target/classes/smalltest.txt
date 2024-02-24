@@ -1,6 +1,12 @@
-.is.
-.not
-.or.
-.and.
-+
--
+123
+123
+321
+123.123
+0b1001
+0b102
+0c422
+0c59
+0xad12
+0x12jas
+"lmao moment"
+"this is a strlit 123"

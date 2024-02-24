@@ -48,6 +48,7 @@ enum States {
     SYM_LT,
     ESCSEQ,
     NUMLITERAL, BIN, OCT, HEX,
+    STRLIT,
     IDENT,
     RELLOGIC, // relational and logical
     INVALID
@@ -98,8 +99,9 @@ public class HandLexer {
         sc.close();
         // System.out.println(codeString);
 
-        // setting up the tokenslist
+        // setting up the tokenslist and tokenSet
         TokenList tokenList = new TokenList();
+        TokenSet tokenSet = new TokenSet();
 
         // getting the tokens :3
         char c;
@@ -115,41 +117,46 @@ public class HandLexer {
                             // create new token; add to list
                             tokenList.addToken(TokenTypes.COMMA, String.valueOf(c), line);
                             // token name -> output
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             break;
                         case ';':
                             tokenList.addToken(TokenTypes.SEMICOLON, String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             break;
                         case '(':
                             tokenList.addToken(TokenTypes.OPENPAR, String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             break;
                         case ')':
                             tokenList.addToken(TokenTypes.CLOSEPAR, String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             break;
                         case '{':
                             tokenList.addToken(TokenTypes.OPENBR, String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             break;
                         case '}':
                             tokenList.addToken(TokenTypes.CLOSEBR, String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             break;
                         case '!':
                             tokenList.addToken(TokenTypes.INVERT, String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             break;
 
                         case '=':
                             tokenList.addToken(TokenTypes.ASSIGN, String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             break;
 
                         // newlines
                         case '\n':
                             line++;
+                            break;
+
+                        // spaces
+                        case '\t':
+                        case ' ':
                             break;
 
                         // double character cases
@@ -188,6 +195,32 @@ public class HandLexer {
                             subst += String.valueOf(c);
                             break;
 
+                        // numerical literals
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
+                            currState = States.NUMLITERAL;
+                            subst = "";
+                            subst += String.valueOf(c);
+                            break;
+
+                        default:
+                            System.out.println("DEFAULT BEHAVIOUR! " + c);
+                            break;
+
+                        // string literal
+                        case '"':
+                            currState = States.STRLIT;
+                            subst = "";
+                            subst += String.valueOf(c);
+                            break;
                     } // end char switch START
                     break;
 
@@ -196,13 +229,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.ADDASSIGN, "+" + String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.ADD, String.valueOf(codeString.charAt(curr - 1)), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_CROSS
@@ -212,18 +245,18 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.SUBASSIGN, "-" + String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                         case '>':
                             tokenList.addToken(TokenTypes.ARROW, "-" + String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.SUB, String.valueOf(codeString.charAt(curr - 1)), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_DASH
@@ -233,13 +266,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.MULASSIGN, "*" + String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.MUL, String.valueOf(codeString.charAt(curr - 1)), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_ASTER
@@ -249,13 +282,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.DIVASSIGN, "/" + String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.DIV, String.valueOf(codeString.charAt(curr - 1)), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_SLASH
@@ -265,13 +298,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.EXPASSIGN, "^" + String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.EXP, String.valueOf(codeString.charAt(curr - 1)), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_CARET
@@ -281,13 +314,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.GTE, ">" + String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.GT, String.valueOf(codeString.charAt(curr - 1)), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_GT
@@ -297,13 +330,13 @@ public class HandLexer {
                     switch (c) {
                         case '=':
                             tokenList.addToken(TokenTypes.LTE, "<" + String.valueOf(c), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.LT, String.valueOf(codeString.charAt(curr - 1)), line);
-                            output += tokenList.printLatestToken() + "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
                     } // end char switch SYM_LT
@@ -311,24 +344,23 @@ public class HandLexer {
 
                 case RELLOGIC:
                     subst += String.valueOf(c);
-
                     if (c == '.') { // end of rellogics operator found
                         switch (subst) {
                             case ".is.":
                                 tokenList.addToken(TokenTypes.IS, subst, line);
-                                output += tokenList.printLatestToken() + "\n";
+                                output += tokenList.getLatestToken().getType().name() + "\n";
                                 break;
                             case ".not.":
                                 tokenList.addToken(TokenTypes.NOT, subst, line);
-                                output += tokenList.printLatestToken() + "\n";
+                                output += tokenList.getLatestToken().getType().name() + "\n";
                                 break;
                             case ".and.":
                                 tokenList.addToken(TokenTypes.AND, subst, line);
-                                output += tokenList.printLatestToken() + "\n";
+                                output += tokenList.getLatestToken().getType().name() + "\n";
                                 break;
                             case ".or.":
                                 tokenList.addToken(TokenTypes.OR, subst, line);
-                                output += tokenList.printLatestToken() + "\n";
+                                output += tokenList.getLatestToken().getType().name() + "\n";
                                 break;
 
                             default:
@@ -345,12 +377,252 @@ public class HandLexer {
                         subst = "";
                         currState = States.START;
                     }
+                    break;
 
+                case NUMLITERAL:
+                    if (c >= '0' && c <= '9') {
+                        subst += String.valueOf(c);
+                    }
+                    switch (c) {
+                        case 'b': // binary
+                            subst += String.valueOf(c);
+                            currState = States.BIN;
+                            break;
+                        case 'c': // octal
+                            subst += String.valueOf(c);
+                            currState = States.OCT;
+                            break;
+                        case 'x': // hexadecimal
+                            subst += String.valueOf(c);
+                            currState = States.HEX;
+                            break;
+
+                        // integer
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
+                            break;
+
+                        case '.':
+                            subst += String.valueOf(c);
+                            // purge
+                            c = advance();
+                            while (c >= '0' && c <= '9') {
+                                subst += String.valueOf(c);
+                                c = advance();
+                            }
+                            error(line, "\"" + subst + "\" decimals/floating points not supported!");
+                            output += "ERROR_line-" + line + "_NUMLIT\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                            tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                            output += tokenList.getLatestToken().getType().name() + "("
+                                    + tokenList.getLatestToken().getValue() + ")\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+                    }
+                    break;
+
+                case BIN:
+                    if (c == '0' || c == '1') {
+                        subst += String.valueOf(c);
+                    }
+                    switch (c) {
+                        case '0':
+                        case '1':
+                            break;
+
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
+                            // purge
+                            subst += String.valueOf(c);
+                            c = advance();
+                            while (c >= '0' && c <= '9') {
+                                subst += String.valueOf(c);
+                                c = advance();
+                            }
+                            error(line, "\"" + subst + "\" not a valid binary value!");
+                            output += "ERROR_line-" + line + "_NUMLIT\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        case '.':
+                            subst += String.valueOf(c);
+                            // purge
+                            c = advance();
+                            while (c >= '0' && c <= '9') {
+                                subst += String.valueOf(c);
+                                c = advance();
+                            }
+                            error(line, "\"" + subst + "\" decimals/floating points not supported!");
+                            output += "ERROR_line-" + line + "_NUMLIT\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                            tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                            output += tokenList.getLatestToken().getType().name() + "("
+                                    + tokenList.getLatestToken().getValue() + ")\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+                    }
+                    break;
+
+                case OCT:
+                    if (c >= '0' && c <= '7') {
+                        subst += String.valueOf(c);
+                    }
+                    switch (c) {
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                            break;
+
+                        case '8':
+                        case '9':
+                            // purge
+                            subst += String.valueOf(c);
+                            c = advance();
+                            while (c >= '0' && c <= '9') {
+                                subst += String.valueOf(c);
+                                c = advance();
+                            }
+                            error(line, "\"" + subst + "\" not a valid octal value!");
+                            output += "ERROR_line-" + line + "_NUMLIT\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        case '.':
+                            subst += String.valueOf(c);
+                            // purge
+                            c = advance();
+                            while (c >= '0' && c <= '9') {
+                                subst += String.valueOf(c);
+                                c = advance();
+                            }
+                            error(line, "\"" + subst + "\" decimals/floating points not supported!");
+                            output += "ERROR_line-" + line + "_NUMLIT\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                            tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                            output += tokenList.getLatestToken().getType().name() + "("
+                                    + tokenList.getLatestToken().getValue() + ")\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+                    }
+                    break;
+
+                case HEX:
+                    if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
+                        subst += String.valueOf(c);
+                    }
+                    switch (c) {
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
+                        case 'a':
+                        case 'b':
+                        case 'c':
+                        case 'd':
+                        case 'e':
+                        case 'f':
+                        case 'A':
+                        case 'B':
+                        case 'C':
+                        case 'D':
+                        case 'E':
+                        case 'F':
+                            break;
+
+                        case '.':
+                            subst += String.valueOf(c);
+                            // purge
+                            c = advance();
+                            while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
+                                subst += String.valueOf(c);
+                                c = advance();
+                            }
+                            subst = subst.toUpperCase();
+                            error(line, "\"" + subst + "\" decimals/floating points not supported!");
+                            output += "ERROR_line-" + line + "_NUMLIT\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst = subst.toUpperCase();
+                            tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                            tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                            output += tokenList.getLatestToken().getType().name() + "("
+                                    + tokenList.getLatestToken().getValue() + ")\n";
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+                    }
+                    break;
+
+                case STRLIT:
+                    subst += String.valueOf(c);
+                    if (c == '\"') {
+                        tokenList.addToken(TokenTypes.STRLIT, subst, line);
+                        tokenSet.addToken(TokenTypes.STRLIT, subst, line);
+                        output += tokenList.getLatestToken().getType().name() + "("
+                                + tokenList.getLatestToken().getValue() + ")\n";
+                        currState = States.START;
+                        break;
+                    }
             } // end case state switch
         } // end scanner while
 
+        System.out.println("TokenList:");
         tokenList.printTokens();
         System.out.println();
+
+        System.out.println("Identifiers / Numerical Literals:");
+        tokenSet.printTokens();
+        System.out.println();
+
+        System.out.println("Output:");
         output += "\n" + numErrs + " ERRORS FOUND!\n" + errorsStr;
         System.out.println(output);
     }
