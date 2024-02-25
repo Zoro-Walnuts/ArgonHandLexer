@@ -1,5 +1,10 @@
 inert mole32 x = 32;
 reactive mole64 y = 128;
+/* comments
+shouldn't
+be
+seen
+*/
 print(y/x);
 printerr(x/y);
 println(x.is..not.y);

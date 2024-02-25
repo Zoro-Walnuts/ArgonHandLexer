@@ -389,6 +389,26 @@ public class HandLexer {
                             output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.START;
                             break;
+                        case '/': // inline comment found
+                            // purge until newline found
+                            while (c != '\n') {
+                                c = advance();
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        case '*': // multiline comment found
+                            // purge until end of comment found
+                            while (!(c == '*' && advance() == '/')) {
+                                c = advance();
+                                if (c == '\n') {
+                                    line++;
+                                }
+                            }
+                            currState = States.START;
+                            break;
+
                         default:
                             c = backtrack();
                             tokenList.addToken(TokenTypes.DIV, String.valueOf(codeString.charAt(curr - 1)), line);
