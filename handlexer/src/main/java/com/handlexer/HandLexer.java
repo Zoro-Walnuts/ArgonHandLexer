@@ -608,7 +608,7 @@ public class HandLexer {
                     }
 
                     if (c == '\\') { // escape sequence found
-                        tempStr = "";
+                        // tempStr = "";
                         currState = States.ESCAPE;
                         break;
                     }
