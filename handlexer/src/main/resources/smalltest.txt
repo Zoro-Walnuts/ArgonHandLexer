@@ -1,5 +1,5 @@
-123.not.321
-123.and.321
-123.or.321
-123.is.321
-123.is..not.321
+inert mole32 x = 32;
+reactive mole64 y = 128;
+print(y/x);
+printerr(x/y);
+println(x.is..not.y);

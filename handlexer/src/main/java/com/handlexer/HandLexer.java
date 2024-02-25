@@ -33,8 +33,8 @@ enum TokenTypes {
 
     // reserved words (40-56)
     CATALYZE, DECOMPOSE, DISTILL, FUNNEL, FILTER,
-    FERMENT, FROM, INERT, INPUT, PRINT, PRINTLN,
-    PRINTERR, REACTIVE, TITRATE, TO, WHEN, STEP
+    FERMENT, FALSE, INERT, INPUT, MOLE32, MOLE64,
+    PRINT, PRINTLN, PRINTERR, REACTIVE, TRUE, UNTIL, WHEN
 }
 
 enum States {
@@ -49,9 +49,10 @@ enum States {
     ESCAPE,
     NUMLITERAL, BIN, OCT, HEX,
     STRLIT,
-    IDENT, RESWORD,
+    IDENT,
+    // reserved words
+    RES_C, RES_D, RES_F, RES_I, RES_M, RES_P, RES_R, RES_T, RES_U, RES_W,
     RELLOGIC, // relational and logical
-    INVALID
 }
 
 public class HandLexer {
@@ -223,27 +224,24 @@ public class HandLexer {
                             break;
 
                         // identifiers and keywords
+                        // regular identifiers
                         case '_':
                         case 'a':
                         case 'b':
-                        case 'c':
-                        case 'd':
                         case 'e':
-                        case 'f':
                         case 'g':
                         case 'h':
-                        case 'i':
                         case 'j':
                         case 'k':
                         case 'l':
-                        case 'm':
                         case 'n':
                         case 'o':
-                        case 'p':
                         case 'q':
-                        case 'r':
                         case 's':
-                        case 't':
+                        case 'v':
+                        case 'x':
+                        case 'y':
+                        case 'z':
                         case 'A':
                         case 'B':
                         case 'C':
@@ -270,6 +268,62 @@ public class HandLexer {
                         case 'X':
                         case 'Y':
                         case 'Z':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.IDENT;
+                            break;
+
+                        // possible keywords
+                        case 'c':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_C;
+                            break;
+                        case 'd':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_D;
+                            break;
+                        case 'f':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_F;
+                            break;
+                        case 'i':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_I;
+                            break;
+                        case 'm':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_M;
+                            break;
+                        case 'p':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_P;
+                            break;
+                        case 'r':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_R;
+                            break;
+                        case 't':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_T;
+                            break;
+                        case 'u':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_U;
+                            break;
+                        case 'w':
+                            subst = "";
+                            subst += String.valueOf(c);
+                            currState = States.RES_W;
+                            break;
 
                     } // end char switch START
                     break;
@@ -777,6 +831,543 @@ public class HandLexer {
                             currState = States.STRLIT;
                             break;
                     }
+                    break;
+
+                case IDENT:
+                    if (c == '_' || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
+                        subst += String.valueOf(c);
+                    } else {
+                        tokenList.addToken(TokenTypes.IDENT, subst, line);
+                        tokenSet.addToken(TokenTypes.IDENT, subst, line);
+                        output += tokenList.getLatestToken().getType().name() + "("
+                                + tokenList.getLatestToken().getValue() + ")\n";
+                        c = backtrack();
+                        currState = States.START;
+                    }
+                    break;
+
+                case RES_C:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("catalyze")) {
+                                tokenList.addToken(TokenTypes.CATALYZE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("catalyze")) {
+                                tokenList.addToken(TokenTypes.CATALYZE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.IDENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
+
+                case RES_D:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("decompose")) {
+                                tokenList.addToken(TokenTypes.DECOMPOSE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else if (subst.equals("distill")) {
+                                tokenList.addToken(TokenTypes.DISTILL, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("decompose")) {
+                                tokenList.addToken(TokenTypes.DECOMPOSE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else if (subst.equals("distill")) {
+                                tokenList.addToken(TokenTypes.DISTILL, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.IDENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
+
+                case RES_F:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("funnel")) {
+                                tokenList.addToken(TokenTypes.FUNNEL, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else if (subst.equals("filter")) {
+                                tokenList.addToken(TokenTypes.FILTER, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else if (subst.equals("ferment")) {
+                                tokenList.addToken(TokenTypes.FERMENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else if (subst.equals("false")) {
+                                tokenList.addToken(TokenTypes.FALSE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("funnel")) {
+                                tokenList.addToken(TokenTypes.FUNNEL, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else if (subst.equals("filter")) {
+                                tokenList.addToken(TokenTypes.FILTER, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else if (subst.equals("ferment")) {
+                                tokenList.addToken(TokenTypes.FERMENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else if (subst.equals("false")) {
+                                tokenList.addToken(TokenTypes.FALSE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.IDENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
+
+                case RES_I:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("inert")) {
+                                tokenList.addToken(TokenTypes.INERT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else if (subst.equals("input")) {
+                                tokenList.addToken(TokenTypes.INPUT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("inert")) {
+                                tokenList.addToken(TokenTypes.INERT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else if (subst.equals("input")) {
+                                tokenList.addToken(TokenTypes.INPUT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.IDENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
+
+                case RES_M:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("mole32")) {
+                                tokenList.addToken(TokenTypes.MOLE32, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else if (subst.equals("mole64")) {
+                                tokenList.addToken(TokenTypes.MOLE64, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("mole32")) {
+                                tokenList.addToken(TokenTypes.MOLE32, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else if (subst.equals("mole64")) {
+                                tokenList.addToken(TokenTypes.INPUT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.MOLE64, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
+
+                case RES_P:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("print")) {
+                                tokenList.addToken(TokenTypes.PRINT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else if (subst.equals("println")) {
+                                tokenList.addToken(TokenTypes.PRINTLN, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else if (subst.equals("printerr")) {
+                                tokenList.addToken(TokenTypes.PRINTERR, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("print")) {
+                                tokenList.addToken(TokenTypes.PRINT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else if (subst.equals("println")) {
+                                tokenList.addToken(TokenTypes.PRINTLN, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else if (subst.equals("printerr")) {
+                                tokenList.addToken(TokenTypes.PRINTERR, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.IDENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
+
+                case RES_R:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("reactive")) {
+                                tokenList.addToken(TokenTypes.REACTIVE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("reactive")) {
+                                tokenList.addToken(TokenTypes.REACTIVE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.IDENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
+
+                case RES_U:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("until")) {
+                                tokenList.addToken(TokenTypes.UNTIL, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("until")) {
+                                tokenList.addToken(TokenTypes.UNTIL, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.IDENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
+
+                case RES_W:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("when")) {
+                                tokenList.addToken(TokenTypes.WHEN, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("when")) {
+                                tokenList.addToken(TokenTypes.WHEN, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.IDENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
 
             } // end case state switch
         } // end scanner while
