@@ -1,15 +1,5 @@
-123
-123
-321
-123.123
-0b1001
-0b102
-0c422
-0c59
-0xad12
-0x12jas
-"lmao moment"
-"this is a strlit 123"
-"lmao moment"
-"strlit with escapes \n newline \t tab \\ backslash \' single quote \" double quote \f formfeed "
-"strlit with more escapes\r wow this is cool"
+123.not.321
+123.and.321
+123.or.321
+123.is.321
+123.is..not.321

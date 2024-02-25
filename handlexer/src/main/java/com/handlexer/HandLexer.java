@@ -49,7 +49,7 @@ enum States {
     ESCAPE,
     NUMLITERAL, BIN, OCT, HEX,
     STRLIT,
-    IDENT,
+    IDENT, RESWORD,
     RELLOGIC, // relational and logical
     INVALID
 }
@@ -221,6 +221,55 @@ public class HandLexer {
                             currState = States.STRLIT;
                             subst = "";
                             break;
+
+                        // identifiers and keywords
+                        case '_':
+                        case 'a':
+                        case 'b':
+                        case 'c':
+                        case 'd':
+                        case 'e':
+                        case 'f':
+                        case 'g':
+                        case 'h':
+                        case 'i':
+                        case 'j':
+                        case 'k':
+                        case 'l':
+                        case 'm':
+                        case 'n':
+                        case 'o':
+                        case 'p':
+                        case 'q':
+                        case 'r':
+                        case 's':
+                        case 't':
+                        case 'A':
+                        case 'B':
+                        case 'C':
+                        case 'D':
+                        case 'E':
+                        case 'F':
+                        case 'G':
+                        case 'H':
+                        case 'I':
+                        case 'J':
+                        case 'K':
+                        case 'L':
+                        case 'M':
+                        case 'N':
+                        case 'O':
+                        case 'P':
+                        case 'Q':
+                        case 'R':
+                        case 'S':
+                        case 'T':
+                        case 'U':
+                        case 'V':
+                        case 'W':
+                        case 'X':
+                        case 'Y':
+                        case 'Z':
 
                     } // end char switch START
                     break;
@@ -412,12 +461,24 @@ public class HandLexer {
                             break;
 
                         case '.':
-                            subst += String.valueOf(c);
                             // purge
                             c = advance();
                             while (c >= '0' && c <= '9') {
                                 subst += String.valueOf(c);
                                 c = advance();
+                            }
+                            if (c == 'i' || c == 'n' || c == 'a' || c == 'o') { // check if relogic operator
+                                tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                                tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                                c = backtrack();
+                                c = backtrack();
+                                subst = "";
+                                subst += String.valueOf(c);
+                                c = advance();
+                                currState = States.RELLOGIC;
+                                break;
                             }
                             error(line, "\"" + subst + "\" decimals/floating points not supported!");
                             output += "ERROR_line-" + line + "_NUMLIT\n";
@@ -474,6 +535,19 @@ public class HandLexer {
                                 subst += String.valueOf(c);
                                 c = advance();
                             }
+                            if (c == 'i' || c == 'n' || c == 'a' || c == 'o') { // check if relogic operator
+                                tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                                tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                                c = backtrack();
+                                c = backtrack();
+                                subst = "";
+                                subst += String.valueOf(c);
+                                c = advance();
+                                currState = States.RELLOGIC;
+                                break;
+                            }
                             error(line, "\"" + subst + "\" decimals/floating points not supported!");
                             output += "ERROR_line-" + line + "_NUMLIT\n";
                             c = backtrack();
@@ -529,6 +603,19 @@ public class HandLexer {
                                 subst += String.valueOf(c);
                                 c = advance();
                             }
+                            if (c == 'i' || c == 'n' || c == 'a' || c == 'o') { // check if relogic operator
+                                tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                                tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                                c = backtrack();
+                                c = backtrack();
+                                subst = "";
+                                subst += String.valueOf(c);
+                                c = advance();
+                                currState = States.RELLOGIC;
+                                break;
+                            }
                             error(line, "\"" + subst + "\" decimals/floating points not supported!");
                             output += "ERROR_line-" + line + "_NUMLIT\n";
                             c = backtrack();
@@ -582,6 +669,19 @@ public class HandLexer {
                             while ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
                                 subst += String.valueOf(c);
                                 c = advance();
+                            }
+                            if (c == 'i' || c == 'n' || c == 'a' || c == 'o') { // check if relogic operator
+                                tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                                tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                                c = backtrack();
+                                c = backtrack();
+                                subst = "";
+                                subst += String.valueOf(c);
+                                c = advance();
+                                currState = States.RELLOGIC;
+                                break;
                             }
                             subst = subst.toUpperCase();
                             error(line, "\"" + subst + "\" decimals/floating points not supported!");
