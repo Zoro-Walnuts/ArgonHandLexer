@@ -1,5 +1,5 @@
 # ARGON PROGLANG CHEATSHEET
-
+*By: Lee Arden Yap*
 ---
 
 ## 1. Mutability
