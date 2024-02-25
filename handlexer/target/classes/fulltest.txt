@@ -25,6 +25,7 @@ ferment
 25
 45678
 0b10101101
+0b1010.1101
 0b10210111
 0c612674
 0c624159
@@ -67,18 +68,19 @@ inertia
 )
 {
 }
-\n
-\t
-\r
-\b
-\\
-\'
-\"
-\f
+"string literal test"
+"strlit with escseqs \n newline"
+"strlit with escseqs \t newline"
+"strlit with escseqs \r newline"
+"strlit with escseqs \b newline"
+"strlit with escseqs \\ newline"
+"strlit with escseqs \' newline"
+"strlit with escseqs \" newline"
+"strlit with escseqs \f newline"
 // this is a comment
 /*
 this is a block comment
-
+*/
 titrate ( x > b ) {
 x += b ;
 print(sadfsdfsf) ;

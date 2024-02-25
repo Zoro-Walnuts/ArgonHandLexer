@@ -1,7 +1,9 @@
 package com.handlexer;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -34,7 +36,10 @@ enum TokenTypes {
     // reserved words (40-56)
     CATALYZE, DECOMPOSE, DISTILL, FUNNEL, FILTER,
     FERMENT, FALSE, INERT, INPUT, MOLE32, MOLE64,
-    PRINT, PRINTLN, PRINTERR, REACTIVE, TRUE, UNTIL, WHEN
+    PRINT, PRINTLN, PRINTERR, REACTIVE, TRUE, UNTIL, WHEN,
+
+    // end of code (57)
+    EOF
 }
 
 enum States {
@@ -536,6 +541,7 @@ public class HandLexer {
 
                         case '.':
                             // purge
+                            subst += String.valueOf(c);
                             c = advance();
                             while (c >= '0' && c <= '9') {
                                 subst += String.valueOf(c);
@@ -806,48 +812,56 @@ public class HandLexer {
                         case 'n':
                             tokenList.addToken(TokenTypes.NEWLINE, "\\n", line);
                             subst += "\n";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.STRLIT;
                             break;
 
                         case 't':
                             tokenList.addToken(TokenTypes.HORZTAB, "\\t", line);
                             subst += "\t";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.STRLIT;
                             break;
 
                         case 'r':
                             tokenList.addToken(TokenTypes.CARGRET, "\\r", line);
                             subst += "\r";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.STRLIT;
                             break;
 
                         case 'b':
                             tokenList.addToken(TokenTypes.BACKSPC, "\\t", line);
                             subst += "\b";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.STRLIT;
                             break;
 
                         case '\\':
                             tokenList.addToken(TokenTypes.BACKSLSH, "\\t", line);
                             subst += "\\";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.STRLIT;
                             break;
 
                         case '\'':
                             tokenList.addToken(TokenTypes.SINGQUOT, "\'", line);
                             subst += "\'";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.STRLIT;
                             break;
 
                         case '\"':
                             tokenList.addToken(TokenTypes.DOUBQUOT, "\"", line);
                             subst += "\"";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.STRLIT;
                             break;
 
                         case 'f':
                             tokenList.addToken(TokenTypes.FORMFEED, "\\f", line);
                             subst += "\f";
+                            output += tokenList.getLatestToken().getType().name() + "\n";
                             currState = States.STRLIT;
                             break;
                     }
@@ -1287,6 +1301,57 @@ public class HandLexer {
                     }
                     break;
 
+                case RES_T:
+                    switch (c) {
+                        case ' ':
+                        case '\n':
+                        case '\t':
+                        case '\r':
+                            if (subst.equals("true")) {
+                                tokenList.addToken(TokenTypes.TRUE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                c = backtrack();
+                                currState = States.IDENT;
+                            }
+                            break;
+
+                        case ',':
+                        case ';':
+                        case '(':
+                        case ')':
+                        case '{':
+                        case '}':
+                        case '!':
+                        case '=':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '^':
+                        case '>':
+                        case '<':
+                        case '.':
+                            if (subst.equals("true")) {
+                                tokenList.addToken(TokenTypes.TRUE, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "\n";
+                            } else {
+                                tokenList.addToken(TokenTypes.IDENT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                            }
+                            c = backtrack();
+                            currState = States.START;
+                            break;
+
+                        default:
+                            subst += String.valueOf(c);
+                            break;
+                    }
+                    break;
+
                 case RES_U:
                     switch (c) {
                         case ' ':
@@ -1391,6 +1456,9 @@ public class HandLexer {
 
             } // end case state switch
         } // end scanner while
+          // end of code found!
+        tokenList.addToken(TokenTypes.EOF, null, line);
+        output += tokenList.getLatestToken().getType().name() + "\n";
 
         System.out.println("Note all values are sanitized (escape sequences are printed as is)");
         System.out.println("TokenList:");
@@ -1404,5 +1472,15 @@ public class HandLexer {
         System.out.println("Output:");
         output += "\n" + numErrs + " ERRORS FOUND!\n" + errorsStr;
         System.out.println(output);
+
+        try {
+            // writing to output file
+            BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
+            writer.write(output);
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 }

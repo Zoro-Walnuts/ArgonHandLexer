@@ -46,6 +46,8 @@ public class Token {
     }
 
     public String sanitizedValue() {
+        if (this.value == null)
+            return null;
         return this.value.toString()
                 .replace("\n", "\\n")
                 .replace("\t", "\\t")

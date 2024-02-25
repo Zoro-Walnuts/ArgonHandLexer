@@ -1,0 +1,136 @@
+REACTIVE
+INERT
+MOLE32
+MOLE64
+DECOMPOSE
+INPUT
+PRINT
+AND
+OR
+NOT
+IS
+IS
+NOT
+FUNNEL
+FILTER
+CATALYZE
+IDENT(titrate)
+DISTILL
+FERMENT
+NUMLIT(25)
+IDENT(y19)
+NUMLIT(3)
+IDENT(asui8)
+NUMLIT(25)
+NUMLIT(25)
+NUMLIT(25)
+NUMLIT(45678)
+NUMLIT(0b10101101)
+ERROR_line-28_NUMLIT
+ERROR_line-29_NUMLIT
+NUMLIT(0c612674)
+ERROR_line-31_NUMLIT
+NUMLIT(0XEF1CE347)
+NUMLIT(0X)
+IDENT(p182x344)
+ERROR_line-34_NUMLIT
+ERROR_line-35_NUMLIT
+IDENT(thisIsAnID)
+IDENT(thisISANID)
+IDENT(anotherID)
+IDENT(thisIsAnID)
+IDENT(_UnderscoreID)
+IDENT(____)
+IDENT(printIDtest)
+NUMLIT(123)
+IDENT(NotAnID)
+IDENT(a)
+IDENT(b)
+IDENT(reac)
+IDENT(inertia)
+ADD
+SUB
+MUL
+DIV
+EXP
+ASSIGN
+ADDASSIGN
+SUBASSIGN
+MULASSIGN
+DIVASSIGN
+EXPASSIGN
+ARROW
+INVERT
+LT
+GT
+LTE
+GTE
+COMMA
+SEMICOLON
+OPENPAR
+CLOSEPAR
+OPENBR
+CLOSEBR
+STRLIT(string literal test)
+NEWLINE
+STRLIT(strlit with escseqs \\n newline)
+HORZTAB
+STRLIT(strlit with escseqs \\t newline)
+CARGRET
+STRLIT(strlit with escseqs \\r newline)
+BACKSPC
+STRLIT(strlit with escseqs \\b newline)
+BACKSLSH
+STRLIT(strlit with escseqs \\ newline)
+SINGQUOT
+STRLIT(strlit with escseqs \' newline)
+DOUBQUOT
+STRLIT(strlit with escseqs \" newline)
+FORMFEED
+STRLIT(strlit with escseqs \f newline)
+IDENT(titrate)
+OPENPAR
+IDENT(x)
+GT
+IDENT(b)
+CLOSEPAR
+OPENBR
+IDENT(x)
+ADDASSIGN
+IDENT(b)
+SEMICOLON
+PRINT
+OPENPAR
+IDENT(sadfsdfsf)
+CLOSEPAR
+SEMICOLON
+CLOSEBR
+FILTER
+OPENPAR
+IDENT(x)
+GT
+IDENT(b)
+CLOSEPAR
+OPENBR
+IDENT(x)
+ADDASSIGN
+IDENT(b)
+SEMICOLON
+CLOSEBR
+FUNNEL
+OPENBR
+IDENT(b)
+ADDASSIGN
+IDENT(x)
+SEMICOLON
+CLOSEBR
+EOF
+
+7 ERRORS FOUND!
+[line 13] Error: .cool. is not a valid relational/logical operator!
+[line 14] Error: .nnnootttt. is not a valid relational/logical operator!
+[line 28] Error: "0b1010.1101" decimals/floating points not supported!
+[line 29] Error: "0b10210111" not a valid binary value!
+[line 31] Error: "0c624159" not a valid octal value!
+[line 34] Error: "2.0" decimals/floating points not supported!
+[line 35] Error: "52.132" decimals/floating points not supported!
