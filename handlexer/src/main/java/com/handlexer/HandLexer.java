@@ -13,10 +13,10 @@ enum TokenTypes {
     CLOSEPAR, OPENBR, CLOSEBR, INVERT,
 
     // possibly two character tokens (8-23)
-    ADD, INC, ADDASSIGN,
-    SUB, DEC, SUBASSIGN, ARROW,
+    ADD, ADDASSIGN,
+    SUB, SUBASSIGN, ARROW,
     MUL, MULASSIGN,
-    DIV, DIVASSIGN, LINECMT,
+    DIV, DIVASSIGN,
     EXP, EXPASSIGN,
     GT, GTE,
     LT, LTE,
@@ -567,12 +567,24 @@ public class HandLexer {
                             break;
 
                         default:
-                            tokenList.addToken(TokenTypes.NUMLIT, subst, line);
-                            tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
-                            output += tokenList.getLatestToken().getType().name() + "("
-                                    + tokenList.getLatestToken().getValue() + ")\n";
-                            c = backtrack();
-                            currState = States.START;
+                            if (c == '\n' || c == ' ' || c == '\t' || c == '\r') {
+                                tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                                tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                subst += String.valueOf(c);
+                                while (c != '\n' && c != ' ' && c != '\t' && c != '\r') {
+                                    c = advance();
+                                    if (c != '\n' && c != ' ' && c != '\t' && c != '\r') {
+                                        subst += String.valueOf(c);
+                                    }
+                                }
+                                error(line, subst + " invalid number literal!");
+                                currState = States.START;
+                            }
                             break;
                     }
                     break;
@@ -635,12 +647,29 @@ public class HandLexer {
                             break;
 
                         default:
-                            tokenList.addToken(TokenTypes.NUMLIT, subst, line);
-                            tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
-                            output += tokenList.getLatestToken().getType().name() + "("
-                                    + tokenList.getLatestToken().getValue() + ")\n";
-                            c = backtrack();
-                            currState = States.START;
+                            if (subst.equals("0b")) { // check if a value was recorded
+                                error(line, subst + " invalid binary literal!");
+                                currState = States.START;
+                                break;
+                            }
+                            if (c == '\n' || c == ' ' || c == '\t' || c == '\r') {
+                                tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                                tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                subst += String.valueOf(c);
+                                while (!(c == '\n' || c == ' ' || c == '\t' || c == '\r')) {
+                                    c = advance();
+                                    if (c != '\n' && c != ' ' && c != '\t' && c != '\r') {
+                                        subst += String.valueOf(c);
+                                    }
+                                }
+                                error(line, subst + " invalid binary literal!");
+                                currState = States.START;
+                            }
                             break;
                     }
                     break;
@@ -703,12 +732,29 @@ public class HandLexer {
                             break;
 
                         default:
-                            tokenList.addToken(TokenTypes.NUMLIT, subst, line);
-                            tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
-                            output += tokenList.getLatestToken().getType().name() + "("
-                                    + tokenList.getLatestToken().getValue() + ")\n";
-                            c = backtrack();
-                            currState = States.START;
+                            if (subst.equals("0c")) { // check if a value was recorded
+                                error(line, subst + " invalid octal literal!");
+                                currState = States.START;
+                                break;
+                            }
+                            if (c == '\n' || c == ' ' || c == '\t' || c == '\r') {
+                                tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                                tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                subst += String.valueOf(c);
+                                while (!(c == '\n' || c == ' ' || c == '\t' || c == '\r')) {
+                                    c = advance();
+                                    if (c != '\n' && c != ' ' && c != '\t' && c != '\r') {
+                                        subst += String.valueOf(c);
+                                    }
+                                }
+                                error(line, subst + " invalid octal literal!");
+                                currState = States.START;
+                            }
                             break;
                     }
                     break;
@@ -771,13 +817,30 @@ public class HandLexer {
                             break;
 
                         default:
-                            subst = subst.toUpperCase();
-                            tokenList.addToken(TokenTypes.NUMLIT, subst, line);
-                            tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
-                            output += tokenList.getLatestToken().getType().name() + "("
-                                    + tokenList.getLatestToken().getValue() + ")\n";
-                            c = backtrack();
-                            currState = States.START;
+                            if (subst.equals("0x")) { // check if a value was recorded
+                                error(line, subst + " invalid hexadecimal literal!");
+                                currState = States.START;
+                                break;
+                            }
+                            if (c == '\n' || c == ' ' || c == '\t' || c == '\r') {
+                                subst = subst.toUpperCase();
+                                tokenList.addToken(TokenTypes.NUMLIT, subst, line);
+                                tokenSet.addToken(TokenTypes.NUMLIT, subst, line);
+                                output += tokenList.getLatestToken().getType().name() + "("
+                                        + tokenList.getLatestToken().getValue() + ")\n";
+                                c = backtrack();
+                                currState = States.START;
+                            } else {
+                                subst += String.valueOf(c);
+                                while (!(c == '\n' || c == ' ' || c == '\t' || c == '\r')) {
+                                    c = advance();
+                                    if (c != '\n' && c != ' ' && c != '\t' && c != '\r') {
+                                        subst += String.valueOf(c);
+                                    }
+                                }
+                                error(line, subst + " invalid hexadecimal literal!");
+                                currState = States.START;
+                            }
                             break;
                     }
                     break;
