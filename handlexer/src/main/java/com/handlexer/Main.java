@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         HandLexer lex = new HandLexer();
-        if (args.length >= 0) {
+        if (args.length > 0) {
             try {
                 // set file for command argument:
                 File file = new File("handlexer/src/main/resources/" + args[0]);
