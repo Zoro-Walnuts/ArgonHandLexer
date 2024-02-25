@@ -1,0 +1,12 @@
+reactive umole32 x = 50;
+inert umole64 y = 100;
+reactive umole32 i = 1;
+
+ferment (((x.is.50).or.(x.is.2)).and.(i<=3)) {
+	filter (i<=3) {
+		println("This is a test print");
+		print(x);
+		println(x+y);
+		i+=1;
+	}
+}

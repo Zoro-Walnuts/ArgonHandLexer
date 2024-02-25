@@ -16,7 +16,7 @@
             "request": "launch",
             "mainClass": "com.handlexer.Main",
             "projectName": "handlexer",
-            "args": ["fulltest.txt"]
+            "args": ["handlexer/src/main/resources/test.txt"]
         }
     ]
 }

@@ -1,133 +1,74 @@
 REACTIVE
-INERT
-MOLE32
-MOLE64
-DECOMPOSE
-INPUT
-PRINT
-AND
-OR
-NOT
-IS
-IS
-NOT
-FUNNEL
-FILTER
-CATALYZE
-IDENT(titrate)
-DISTILL
-FERMENT
-NUMLIT(25)
-NUMLIT(25)
-NUMLIT(25)
-NUMLIT(45678)
-NUMLIT(0b10101101)
-ERROR_line-26_NUMLIT
-ERROR_line-27_NUMLIT
-NUMLIT(0c612674)
-ERROR_line-29_NUMLIT
-NUMLIT(0XEF1CE347)
-NUMLIT(182X344)
-ERROR_line-32_NUMLIT
-ERROR_line-33_NUMLIT
-IDENT(thisIsAnID)
-IDENT(thisISANID)
-IDENT(anotherID)
-IDENT(thisIsAnID)
-IDENT(_UnderscoreID)
-IDENT(____)
-IDENT(printIDtest)
-IDENT(a)
-IDENT(b)
-IDENT(reac)
-IDENT(inertia)
-ADD
-SUB
-MUL
-DIV
-EXP
+IDENT(umole32)
+IDENT(x)
 ASSIGN
-ADDASSIGN
-SUBASSIGN
-MULASSIGN
-DIVASSIGN
-EXPASSIGN
-ARROW
-INVERT
-LT
-GT
-LTE
-GTE
-COMMA
+NUMLIT(50)
 SEMICOLON
+INERT
+IDENT(umole64)
+IDENT(y)
+ASSIGN
+NUMLIT(100)
+SEMICOLON
+REACTIVE
+IDENT(umole32)
+IDENT(i)
+ASSIGN
+NUMLIT(1)
+SEMICOLON
+FERMENT
 OPENPAR
-CLOSEPAR
-OPENBR
-CLOSEBR
-STRLIT(string literal test)
-NEWLINE
-STRLIT(strlit with escseqs \\n newline)
-HORZTAB
-STRLIT(strlit with escseqs \\t newline)
-CARGRET
-STRLIT(strlit with escseqs \\r newline)
-BACKSPC
-STRLIT(strlit with escseqs \\b newline)
-BACKSLSH
-STRLIT(strlit with escseqs \\ newline)
-SINGQUOT
-STRLIT(strlit with escseqs \' newline)
-DOUBQUOT
-STRLIT(strlit with escseqs \" newline)
-FORMFEED
-STRLIT(strlit with escseqs \f newline)
-IDENT(titrate)
+OPENPAR
 OPENPAR
 IDENT(x)
-GT
-IDENT(b)
+IS
+NUMLIT(50)
+CLOSEPAR
+OR
+OPENPAR
+IDENT(x)
+IS
+NUMLIT(2)
+CLOSEPAR
+CLOSEPAR
+AND
+OPENPAR
+IDENT(i)
+LTE
+NUMLIT(3)
+CLOSEPAR
 CLOSEPAR
 OPENBR
-IDENT(x)
-ADDASSIGN
-IDENT(b)
+FILTER
+OPENPAR
+IDENT(i)
+LTE
+NUMLIT(3)
+CLOSEPAR
+OPENBR
+PRINTLN
+OPENPAR
+STRLIT(This is a test print)
+CLOSEPAR
 SEMICOLON
 PRINT
 OPENPAR
-IDENT(sadfsdfsf)
+IDENT(x)
 CLOSEPAR
 SEMICOLON
-CLOSEBR
-FILTER
+PRINTLN
 OPENPAR
 IDENT(x)
-GT
-IDENT(b)
+ADD
+IDENT(y)
 CLOSEPAR
-OPENBR
-IDENT(x)
+SEMICOLON
+IDENT(i)
 ADDASSIGN
-IDENT(b)
+NUMLIT(1)
 SEMICOLON
 CLOSEBR
-FUNNEL
-OPENBR
-IDENT(b)
-ADDASSIGN
-IDENT(x)
-SEMICOLON
 CLOSEBR
 EOF
 
-11 ERRORS FOUND!
-[line 13] Error: .cool. is not a valid relational/logical operator!
-[line 14] Error: .nnnootttt. is not a valid relational/logical operator!
-[line 21] Error: 25y19 invalid number literal!
-[line 21] Error: 3asui8 invalid number literal!
-[line 26] Error: "0b1010.1101" decimals/floating points not supported!
-[line 27] Error: "0b10210111" not a valid binary value!
-[line 29] Error: "0c624159" not a valid octal value!
-[line 31] Error: 0x invalid hexadecimal literal!
-[line 32] Error: "2.0" decimals/floating points not supported!
-[line 33] Error: "52.132" decimals/floating points not supported!
-[line 41] Error: 123NotAnID invalid number literal!
+0 ERRORS FOUND!
