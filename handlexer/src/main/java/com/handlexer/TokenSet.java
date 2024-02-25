@@ -21,7 +21,7 @@ public class TokenSet {
         int i = 1;
         for (Token token : this.tokens) {
             System.out.printf("token %-4d | type: %-10s | value: %-30s | line: %-4d (first occurence)%n",
-                    i, token.getType().toString(), token.getValue().toString(), token.getLine());
+                    i, token.getType().toString(), token.sanitizedValue(), token.getLine());
             i++;
         }
     }

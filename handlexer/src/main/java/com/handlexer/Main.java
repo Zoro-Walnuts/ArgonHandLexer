@@ -11,7 +11,7 @@ public class Main {
                 // System.out.println(file.getAbsolutePath());
                 lex.Analyze(new File(file.getAbsolutePath()));
             } catch (FileNotFoundException e) {
-                System.out.println("File not found.");
+                System.out.println("File not found :3");
             } catch (IOException ioe) {
                 System.out.println(ioe.getMessage());
             } catch (IllegalStateException ise) {

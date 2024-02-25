@@ -46,7 +46,7 @@ enum States {
     SYM_CARET,
     SYM_GT,
     SYM_LT,
-    ESCSEQ,
+    ESCAPE,
     NUMLITERAL, BIN, OCT, HEX,
     STRLIT,
     IDENT,
@@ -71,6 +71,7 @@ public class HandLexer {
     private String codeString = "";
     private String output = "";
     private String subst = "";
+    // private String tempStr = "";
     private int line = 1;
     private int curr;
     private States currState = States.START;
@@ -219,8 +220,8 @@ public class HandLexer {
                         case '"':
                             currState = States.STRLIT;
                             subst = "";
-                            subst += String.valueOf(c);
                             break;
+
                     } // end char switch START
                     break;
 
@@ -602,18 +603,85 @@ public class HandLexer {
                     break;
 
                 case STRLIT:
-                    subst += String.valueOf(c);
+                    if (c != '\\' && c != '\"') {
+                        subst += String.valueOf(c);
+                    }
+
+                    if (c == '\\') { // escape sequence found
+                        tempStr = "";
+                        currState = States.ESCAPE;
+                        break;
+                    }
+
                     if (c == '\"') {
                         tokenList.addToken(TokenTypes.STRLIT, subst, line);
                         tokenSet.addToken(TokenTypes.STRLIT, subst, line);
+
                         output += tokenList.getLatestToken().getType().name() + "("
-                                + tokenList.getLatestToken().getValue() + ")\n";
+                                + tokenList.getLatestToken().sanitizedValue() + ")\n";
+
+                        // To get unsanitized output, uncomment this
+                        // output += tokenList.getLatestToken().getType().name() + "("
+                        // + tokenList.getLatestToken().getValue() + ")\n";
                         currState = States.START;
                         break;
                     }
+                    break;
+                case ESCAPE:
+                    switch (c) { // java handles unescaping
+                        case 'n':
+                            tokenList.addToken(TokenTypes.NEWLINE, "\\n", line);
+                            subst += "\n";
+                            currState = States.STRLIT;
+                            break;
+
+                        case 't':
+                            tokenList.addToken(TokenTypes.HORZTAB, "\\t", line);
+                            subst += "\t";
+                            currState = States.STRLIT;
+                            break;
+
+                        case 'r':
+                            tokenList.addToken(TokenTypes.CARGRET, "\\r", line);
+                            subst += "\r";
+                            currState = States.STRLIT;
+                            break;
+
+                        case 'b':
+                            tokenList.addToken(TokenTypes.BACKSPC, "\\t", line);
+                            subst += "\b";
+                            currState = States.STRLIT;
+                            break;
+
+                        case '\\':
+                            tokenList.addToken(TokenTypes.BACKSLSH, "\\t", line);
+                            subst += "\\";
+                            currState = States.STRLIT;
+                            break;
+
+                        case '\'':
+                            tokenList.addToken(TokenTypes.SINGQUOT, "\'", line);
+                            subst += "\'";
+                            currState = States.STRLIT;
+                            break;
+
+                        case '\"':
+                            tokenList.addToken(TokenTypes.DOUBQUOT, "\"", line);
+                            subst += "\"";
+                            currState = States.STRLIT;
+                            break;
+
+                        case 'f':
+                            tokenList.addToken(TokenTypes.FORMFEED, "\\f", line);
+                            subst += "\f";
+                            currState = States.STRLIT;
+                            break;
+                    }
+
             } // end case state switch
         } // end scanner while
 
+        System.out.println("Note all values are sanitized (escape sequences are printed as is)");
         System.out.println("TokenList:");
         tokenList.printTokens();
         System.out.println();

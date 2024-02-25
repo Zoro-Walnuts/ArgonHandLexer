@@ -45,6 +45,18 @@ public class Token {
         return line;
     }
 
+    public String sanitizedValue() {
+        return this.value.toString()
+                .replace("\n", "\\n")
+                .replace("\t", "\\t")
+                .replace("\r", "\\r")
+                .replace("\b", "\\b")
+                .replace("\\", "\\\\")
+                .replace("\'", "\\\'")
+                .replace("\"", "\\\"")
+                .replace("\f", "\\f");
+    }
+
     // overrides for the tokenset
     @Override
     public int hashCode() {
