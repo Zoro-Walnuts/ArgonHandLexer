@@ -1042,66 +1042,66 @@ public class HandLexer {
                 case ESCAPE:
                     switch (c) { // java handles unescaping
                         case 'n':
-                            tokenList.addToken(TokenTypes.NEWLINE, "\\n", line);
+                            // tokenList.addToken(TokenTypes.NEWLINE, "\\n", line);
                             subst += "\n";
-                            output += tokenList.getLatestToken().getType().name() + "\n";
-                            neatOutput += tokenList.getLatestToken().getType().name() + " ";
+                            // output += tokenList.getLatestToken().getType().name() + "\n";
+                            // neatOutput += tokenList.getLatestToken().getType().name() + " ";
                             currState = States.STRLIT;
                             break;
 
                         case 't':
-                            tokenList.addToken(TokenTypes.HORZTAB, "\\t", line);
+                            // tokenList.addToken(TokenTypes.HORZTAB, "\\t", line);
                             subst += "\t";
-                            output += tokenList.getLatestToken().getType().name() + "\n";
-                            neatOutput += tokenList.getLatestToken().getType().name() + " ";
+                            // output += tokenList.getLatestToken().getType().name() + "\n";
+                            // neatOutput += tokenList.getLatestToken().getType().name() + " ";
                             currState = States.STRLIT;
                             break;
 
                         case 'r':
-                            tokenList.addToken(TokenTypes.CARGRET, "\\r", line);
+                            // tokenList.addToken(TokenTypes.CARGRET, "\\r", line);
                             subst += "\r";
-                            output += tokenList.getLatestToken().getType().name() + "\n";
-                            neatOutput += tokenList.getLatestToken().getType().name() + " ";
+                            // output += tokenList.getLatestToken().getType().name() + "\n";
+                            // neatOutput += tokenList.getLatestToken().getType().name() + " ";
                             currState = States.STRLIT;
                             break;
 
                         case 'b':
-                            tokenList.addToken(TokenTypes.BACKSPC, "\\t", line);
+                            // tokenList.addToken(TokenTypes.BACKSPC, "\\t", line);
                             subst += "\b";
-                            output += tokenList.getLatestToken().getType().name() + "\n";
-                            neatOutput += tokenList.getLatestToken().getType().name() + " ";
+                            // output += tokenList.getLatestToken().getType().name() + "\n";
+                            // neatOutput += tokenList.getLatestToken().getType().name() + " ";
                             currState = States.STRLIT;
                             break;
 
                         case '\\':
-                            tokenList.addToken(TokenTypes.BACKSLSH, "\\t", line);
+                            // tokenList.addToken(TokenTypes.BACKSLSH, "\\t", line);
                             subst += "\\";
-                            output += tokenList.getLatestToken().getType().name() + "\n";
-                            neatOutput += tokenList.getLatestToken().getType().name() + " ";
+                            // output += tokenList.getLatestToken().getType().name() + "\n";
+                            // neatOutput += tokenList.getLatestToken().getType().name() + " ";
                             currState = States.STRLIT;
                             break;
 
                         case '\'':
-                            tokenList.addToken(TokenTypes.SINGQUOT, "\'", line);
+                            // tokenList.addToken(TokenTypes.SINGQUOT, "\'", line);
                             subst += "\'";
-                            output += tokenList.getLatestToken().getType().name() + "\n";
-                            neatOutput += tokenList.getLatestToken().getType().name() + " ";
+                            // output += tokenList.getLatestToken().getType().name() + "\n";
+                            // neatOutput += tokenList.getLatestToken().getType().name() + " ";
                             currState = States.STRLIT;
                             break;
 
                         case '\"':
-                            tokenList.addToken(TokenTypes.DOUBQUOT, "\"", line);
+                            // tokenList.addToken(TokenTypes.DOUBQUOT, "\"", line);
                             subst += "\"";
-                            output += tokenList.getLatestToken().getType().name() + "\n";
-                            neatOutput += tokenList.getLatestToken().getType().name() + " ";
+                            // output += tokenList.getLatestToken().getType().name() + "\n";
+                            // neatOutput += tokenList.getLatestToken().getType().name() + " ";
                             currState = States.STRLIT;
                             break;
 
                         case 'f':
-                            tokenList.addToken(TokenTypes.FORMFEED, "\\f", line);
+                            // tokenList.addToken(TokenTypes.FORMFEED, "\\f", line);
                             subst += "\f";
-                            output += tokenList.getLatestToken().getType().name() + "\n";
-                            neatOutput += tokenList.getLatestToken().getType().name() + " ";
+                            // output += tokenList.getLatestToken().getType().name() + "\n";
+                            // neatOutput += tokenList.getLatestToken().getType().name() + " ";
                             currState = States.STRLIT;
                             break;
                     }

@@ -1,0 +1,15 @@
+"this is a string literal"
+
+"this is a string \n literal with newline"
+"this is a string \t literal with newline"
+"this is a string \r literal with newline"
+"this is a string \b literal with newline"
+"this is a string \\ literal with newline"
+"this is a string \' literal with newline"
+"this is a string \" literal with newline"
+"this is a string \f literal with newline"
+
+    NEWLINE, HORZTAB,
+    CARGRET, BACKSPC,
+    BACKSLSH, SINGQUOT,
+    DOUBQUOT, FORMFEED,
