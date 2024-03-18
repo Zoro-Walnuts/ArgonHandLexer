@@ -6,10 +6,20 @@ Hand lexer made in java for the Argon Proglang
 
 ### Running and executing
 
-1. Download the jar file (under [releases](https://github.com/Zoro-Walnuts/ArgonHandLexer/releases/tag/v4))
+1. Download the jar file (under [releases](https://github.com/Zoro-Walnuts/ArgonHandLexer/releases/tag/v6))
 2. Open cmd in the directory where the jar file is located
-3. Put your txt file with Argon code in the same directery as the jar file
+3. Put your txt file with Argon code in the same directory as the jar file
 4. type the command `java -jar ArgonHandLexer.jar yourtextfile.txt`. If no txt argument is given, you will get prompted for the filename.
+
+
+#### Using the Batch File
+
+1. Download the jar file (under [releases](https://github.com/Zoro-Walnuts/ArgonHandLexer/releases/tag/v6))
+2. Download the batch file (under [releases](https://github.com/Zoro-Walnuts/ArgonHandLexer/releases/tag/v6))
+3. Put the above two files and your txt file in the same directory
+4. Drag the txt file into the batch file
+
+> NOTE: This won't show the console output, but will still generate output files
 
 ---
 
