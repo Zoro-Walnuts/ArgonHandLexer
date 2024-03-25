@@ -231,7 +231,8 @@ public class HandLexer {
                             break;
 
                         default:
-                            System.out.println("DEFAULT BEHAVIOUR! " + c);
+                            // System.out.println("DEFAULT BEHAVIOUR! " + c);
+                            error(line, "Unexpected character: " + c);
                             break;
 
                         // string literal

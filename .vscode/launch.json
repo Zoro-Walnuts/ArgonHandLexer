@@ -16,7 +16,7 @@
             "request": "launch",
             "mainClass": "com.handlexer.Main",
             "projectName": "handlexer",
-            "args": ["handlexer/src/main/resources/test.txt"]
+            "args": ["handlexer/src/main/resources/concat-test.txt"]
         }
     ]
 }
