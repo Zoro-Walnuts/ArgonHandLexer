@@ -95,7 +95,7 @@ public class HandLexer {
         return curr >= codeString.length();
     }
 
-    public void Analyze(File in) throws IOException {
+    public TokenList Analyze(File in) throws IOException {
 
         // store source code
         FileInputStream fis = new FileInputStream(in);
@@ -1761,7 +1761,7 @@ public class HandLexer {
         output += tokenList.getLatestToken().getType().name();
         neatOutput += tokenList.getLatestToken().getType().name();
 
-        System.out.println("Note all values are sanitized (escape sequences are printed as is)");
+        System.out.println("Note: all values are sanitized (escape sequences are printed as is)");
         System.out.println("TokenList:");
         tokenList.printTokens();
         System.out.println();
@@ -1799,5 +1799,7 @@ public class HandLexer {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+
+        return tokenList;
     }
 }

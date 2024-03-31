@@ -5,11 +5,10 @@ ADD
 STRLIT(multiline )
 ADD
 STRLIT(function call )
+ADD
+STRLIT(multiline )
 CLOSEPAR
 SEMICOLON
 EOF
 
-3 ERRORS FOUND!
-[line 3] Error: Unexpected character: %
-[line 3] Error: Unexpected character: %
-[line 3] Error: Unexpected character: %
+0 ERRORS FOUND!
